@@ -76,6 +76,6 @@ Follow these steps to set up the project on your local development environment:
 
 ### License
     License
-    This project is licensed under a Private License. Permission to access and use the project is required. For inquiries or access requests, please contact [your email or contact information].
+    This project is licensed under a Private License. Permission to access and use the project is required. For inquiries or access requests, please contact [marwanoffical098@gmail.com].
 
     Let me know if further adjustments are needed!
