@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 container-about">
-                <h2>من نحن</h2>
+                <h3>من نحن</h3>
                 <p>نحن شركة رائدة في مجال الخدمات اللوجستية والتوصيل، ملتزمون بتقديم أفضل الحلول التي تساعد عملاءنا على
                     النجاح وتحقيق أهدافهم.</p>
                 <a href="#services" class="btn btn-primary mt-3">استكشف خدماتنا</a>

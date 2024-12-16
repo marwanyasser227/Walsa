@@ -3,11 +3,11 @@
 
     <section class="testimonials-section py-5">
         <div class="container">
-            <h2 class="text-center mb-4">آراء عملائنا</h2>
+            <h3 class="text-center mb-4">آراء عملائنا</h3>
             <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
 
-                    @foreach ($testimonails as $key => $value)
+                    @forelse ($testimonails as $key => $value)
                     <div class="carousel-item {{$key == 0 ? "active" : ''}}">
                         <div class="row justify-content-center">
                             <div class="col-md-5 text-center">
@@ -21,7 +21,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     @endforeach
 
                 </div>
