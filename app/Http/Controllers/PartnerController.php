@@ -66,7 +66,11 @@ class PartnerController extends Controller
      */
     public function show($id)
     {
-        //
+        //! 001 => search partner use id
+        $partner = Partner::find($id);
+
+        //! 002 => view page with data
+        return view('backend.partners.show' , compact('partner'));
     }
 
     /**
