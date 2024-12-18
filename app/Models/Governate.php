@@ -18,8 +18,11 @@ class Governate extends Model
      //! 002 => set Elqouent Realtions between Models
      public function cities(){
         return $this->hasMany(City::class);
-    }
+
+    }//^ Realtion with City table
+
      public function area(){
         return $this->belongsTo(Area::class);
-    }
+
+    }//^ Realtion with Area table
 }

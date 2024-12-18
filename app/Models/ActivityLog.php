@@ -19,13 +19,14 @@ class ActivityLog extends Model
     ];
 
 
-    //! 002 => set realtions
+    //! 002 => set relations
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
+    }//^ Realtion with User table
+
     public function sender()
     {
         return $this->belongsTo(ShipmentSender::class);
-    }
+    }//^ Realtion with Sender table
 }

@@ -59,16 +59,19 @@ class User extends Authenticatable
     //! 003 => set Elqouent Realtions between Models
     public function addresses(){
     return $this->hasMany(UserAddress::class);
+
     } //^ Realtion with Governate table
 
     public function shipments(){
     return $this->hasMany(Shipment::class);
+
     } //^ Realtion with Governate table
 
 
     public function activityLogs()
     {
-        return $this->hasMany(ActivityLog::class);
+    return $this->hasMany(ActivityLog::class);
+    
     }//^ Relationship with ActivityLog
 
 }

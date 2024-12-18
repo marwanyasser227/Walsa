@@ -12,35 +12,34 @@ class CityController extends Controller
 {
     public function index()
     {
-        //! 001 => get Cites data
+        //! 001 => Get Cites data
         $cities = City::all();
 
-        //! 002 => set route direction with data we getted
+        //! 002 => Set route direction with data we getted
         return view('backend.cities.index', compact('cities'));
     }
 
     public function create()
     {
-        //! 001 => get Cites data
+        //! 001 => Get Cites data
         $governates = Governate::all();
 
-        //! 002 => set route direction with data we getted
+        //! 002 => Set route direction with data we getted
         return view('backend.cities.create' ,compact('governates') );
     }
 
     public function store(Request $request)
     {
-        //! 001 => set validation
+        //! 001 => Set validation
         $request->validate([
             'name' => 'unique:cities|required|string|max:255',
             'governate_id' => 'required'
         ]);
 
-        //! 002 => but data in model
+        //! 002 => But data in model
         $city = City::create($request->all());
 
-        //! 003 => redirect user to table with success message and log for admin
-
+        //! 003 => Redirect user to table with success message and log for admin
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'قام '.Auth::user()->name.' بتسجيل مدينة'.$city->name,
@@ -52,26 +51,28 @@ class CityController extends Controller
 
     public function edit($id)
     {
-        //! 001 => get city data based on sended Id
+        //! 001 => Get city data based on sended Id and Governates 
         $city = City::findOrFail($id);
         $governates = Governate::all();
-        //! 002 => get areas data
+
+        //! 002 => Get areas data
         return view('backend.cities.edit', compact('city' , 'governates'));
     }
 
     public function update(Request $request, $id)
     {
-        //! 001 => set validation
+        //! 001 => Set validation
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        //! 002 => but data in model
+        //! 002 => Get city data based on Id
         $city = City::findOrFail($id);
+
+        //! 003 => But data in model
         $city->update($request->all());
 
-        //! 003 => redirect user to table with success message and log for admin
-
+        //! 004 => Redirect user to table with success message and log for admin
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'قام '.Auth::user()->name.' بتعديل مدينة'.$city->name,
@@ -84,17 +85,18 @@ class CityController extends Controller
     public function destroy($id)
     {
 
-        //! 001 => get governorate data based on sended Id
+        //! 001 => Get governorate data based on sended Id
         $city = City::findOrFail($id);
 
+        //! 002 => Set flow to check if an problem had occured
         if(!$city){
             return redirect()->back()->withErrors(['error' => 'حدث خطأ عند في إرسال البيانات من فضلك حاول مرة اخرى']);
 
         }
-        //! 002 => delete record
+        //! 002 => Delete record
         $city->delete();
 
-        //! 003 => redirect user to table with success message and log for admin
+        //! 003 => Redirect user to table with success message and log for admin
 
         ActivityLog::create([
             'user_id' => Auth::id(),

@@ -3,7 +3,7 @@
         @csrf
         @method('PUT')
         <img id="profileImage"
-            src="{{ Auth::user()->profileImage ? asset(Auth::user()->profileImage) : asset('assets/avatar.jpg') }}"
+            src="{{ Auth::user()->profileImage ? asset(Auth::user()->profileImage) : asset('assets/profileimages/avatar.jpg') }}"
             width="150" height="150" alt="Profile Image" class="rounded-circle img-fluid mb-3"
             style="max-width: 150px; height:150px; object-fit:cover; cursor: pointer;">
         <input type="file" id="imageUpload" name="profile_image" accept="image/*"

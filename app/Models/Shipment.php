@@ -22,15 +22,17 @@ class Shipment extends Model
     //! 002 => Set the Protected hidden column that the application can not view without specific return funciton
     public function user(){
         return $this->belongsTo(User::class);
-    }
+
+    }//^ Realtion with User table
 
     public function reciver(){
         return $this->belongsTo(ShipmentReciver::class , 'shipment_reciver_id');
-    }
+
+    }//^ Realtion with Reciver table
 
     public function sender(){
         return $this->belongsTo(ShipmentSender::class , 'shipment_sender_id' );
-    }
+    }//^ Realtion with Sender table
 
     //! 003 => use Notifications
     use Notifiable;

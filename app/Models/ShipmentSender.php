@@ -13,7 +13,6 @@ class ShipmentSender extends Model
     use HasFactory;
 
       //! 001 => Set the columns can user modifiy in model
-
       public $fillable = [
         'name',
         'email',
@@ -30,14 +29,17 @@ class ShipmentSender extends Model
     //! 002 => Set the Protected hidden column that the application can not view without specific return funciton
     public function shipments(){
         return $this->hasMany(Shipment::class);
-    }
+
+    }//^ Realtion with Shipment table
 
     public function city(){
         return $this->belongsTo(City::class);
-     }
+
+    }//^ Realtion with City table
 
      public function activityLogs()
      {
          return $this->hasMany(ActivityLog::class);
-     }//
+
+     }//^ Realtion with ActivityLog table
 }

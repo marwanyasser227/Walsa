@@ -15,11 +15,16 @@ class ContactController extends Controller
 
 
     public function index(){
+        //! 001 => Get all messages from ContactForm
         $messages = Contact::all();
+
+        //! 002 => Return to Dashboard page with data getted
         return view('backend.contact.index' , compact('messages'));
 
     }
+
     public function create(){
+        //! 001 => Send user to page contacts of site
         return view('Frontend.General.contact');
 
     }
@@ -27,7 +32,7 @@ class ContactController extends Controller
 
     public function store(Request $request){
 
-        //! 001 => set validation
+        //! 001 => Set validation
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
@@ -35,8 +40,7 @@ class ContactController extends Controller
             'message' => 'required',
         ]);
 
-        //! 002 => store data
-
+        //! 002 => Store data
         $contact = Contact::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -44,13 +48,12 @@ class ContactController extends Controller
             'message' => $request->message,
         ]);
 
-
-        //! 003 =>  send notification and logs
+        //! 003 => Set flow to check if there is any issue occured
         if(!$contact){
             return redirect()->back()->withErrors(['error' => 'يبدو أن هنالك خطب ما عاود المحاولة🥲']);
         }
 
-
+        //! 004 =>  Send notification and logs 
         $details = "لقد أرسلت رسالة جديدة لنا يا".Auth::user()->name."😊";
         Auth::user()->notify(new ContactFormNotification($details));
 
@@ -61,45 +64,47 @@ class ContactController extends Controller
         ]);
 
 
-        //! 004 => set Route redirect
+        //! 005 => Set Route redirect
         return redirect()->back()->with('message' , 'تم إرسال الرسالة بنجاح سيتم الرد عليك قريبً, إن شاء الله😄');
 
 
     }
 
     public function show($id){
-        //! 001 => get data based on Id
+        //! 001 => Get data based on Id
         $contact = Contact::find($id);
 
-        //! 002 => push data to route
+        //! 002 => Push data to route
         return view('backend.contact.show' , compact('contact'));
     }
 
     public function delete($id){
-        //! 001 => get data based on Id
+        //! 001 => Get data based on Id
         $contact = Contact::find($id);
 
-        //! 002 => more security
+        //! 002 => Set flow to check if there is any issue occured
         if(!$contact){
             return redirect()->back()->withErrors(['error' => 'يبدو أن هنالك خطب ما عاود المحاولة🥲']);
 
         }
 
 
-        //! 003 => delete item
+        //! 003 => Delete item
         $contact = $contact->delete();
 
+        //! 004 => Set flow to check if there is any issue occured
+        if(!$contact){
+            return redirect()->back()->withErrors(['error' => 'يبدو أن هنالك خطب ما عاود المحاولة🥲']);
+
+        }
+        //! 005 => Set notification to user to let him know whats happend
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'قام '.Auth::user()->name.'بحذف الرسالة',
 
         ]);
 
-        if(!$contact){
-            return redirect()->back()->withErrors(['error' => 'يبدو أن هنالك خطب ما عاود المحاولة🥲']);
-
-        }
-
+        //! 006 => Redirect back with messages
         return redirect()->back()->with('message' , 'تم حذف الرسالة بنجاح😎');
 
     }

@@ -15,7 +15,7 @@
                     <!-- صورة الشخص -->
                     <div class="text-center mb-4">
                         <img
-                            src="{{$testimonial->image == null ? asset('assets/avatar.jpg') : asset($testimonial->image) }}"
+                            src="{{$testimonial->image == null ? asset('assets/profileimages/avatar.jpg') : asset($testimonial->image) }}"
                             alt="{{ $testimonial->name }}"
                             class="img-fluid rounded-circle shadow-sm"
                             style="max-width: 150px; height: 150px; border: 5px solid #e9ecef;"

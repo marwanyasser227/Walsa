@@ -1,5 +1,5 @@
 <div class="container my-5" id="features">
-    <h2 class="text-center mb-4">مميزات خدماتنا</h2>
+    <h3 class="text-center mb-4">مميزات خدماتنا</h3>
     <div class="row text-center g-4">
         <div class="col-md-4">
             <div class="feature-card p-4 border rounded-4 shadow-sm">

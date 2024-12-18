@@ -16,6 +16,8 @@ class AuthController extends Controller
 {
 
     public function login(){
+
+        //! 001 => Let user go to login page
         return view('Frontend.Auth.login');
     }
 
@@ -34,11 +36,11 @@ class AuthController extends Controller
             return redirect()->back()->withErrors(['error' => 'حسابك غير موجود في سجلاتنا أو كلمة مرورك بها خطب🤷‍♂️']);
             }
 
-        //! 003 => redirect him with notification,log and message
+        //! 003 => Redirect him with notification,log and message
             $message= "مرحى بعودتك يا".Auth::user()->name."😊";
             $details = " مرحبًا بك ... لقد سجلت دخولك للتو يا ".Auth::user()->name."😊";
             Auth::user()->notify(new AccountUpdatedNotification($details));
-
+            
             ActivityLog::create([
                 'user_id' => Auth::id(),
                 'action' => 'قام '.Auth::user()->name.'بتسجيل الدخول لحسابه لتوه',
@@ -48,16 +50,17 @@ class AuthController extends Controller
     }
 
     public function register(){
+        //! 001 => Let user go to register page
         return view('Frontend.Auth.register');
     }
 
     public function registerStore(RegisterRequest $request , User $user)
     {
-        //! 001 => check if is a valid request
+        //! 001 => Check if is a valid request
         if(!$request){
             return redirect()->route('site.login');
         }
-        //! 002 => get data from request and Store it
+        //! 002 => Get data from request and Store it
         $email = $request->email;
         $password = $request->password;
         $phone = $request->phone;
@@ -72,7 +75,6 @@ class AuthController extends Controller
         ]);
 
         //! 004 => Send notification to user and log to admin
-
         $user->notify(new AccountCreatedNotification());
 
         ActivityLog::create([
@@ -90,6 +92,7 @@ class AuthController extends Controller
         if(!Auth::user()){
             return redirect()->route('login')->withErrors(["error" => 'أنت مسجل لخروجك بالفعل🤷‍♂️']);
         }
+        
         //! 002 => If the user is already logged in and make him logout with message and log for admin
         $details = "لقد سجلت خروجك للتو يا".Auth::user()->name."😢";
         Auth::user()->notify(new AccountUpdatedNotification($details));
@@ -99,13 +102,14 @@ class AuthController extends Controller
             'action' => 'قام '.Auth::user()->name.'بتسجيل الخروج من حسابه',
 
         ]);
-
         Auth::logout();
 
+        //! 003 => Redirect him with toaster message
         return redirect()->route('site.home')->with('message' , '😢تم تسجيل الخروج بنجاح');
     }
-    public function resetPassword(){
 
+    public function resetPassword(){
+        //! 001 => Let user go to resetPassword page
         return view('Frontend.Auth.resetPassword');
     }
 }

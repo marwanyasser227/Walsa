@@ -16,11 +16,13 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        if (Auth::check() && !Auth::user()->isAdmin) {
-            return redirect()->route('site.home')->with('error', 'Admins are not allowed to access the dashboard.');
-        }
-
-        return $next($request);
+        //! 001 => Check if user sign-in in site and is admin 
+         //^ 1.1 => Case is not admin
+            if (Auth::check() && !Auth::user()->isAdmin) {
+                return redirect()->route('site.home')->with('error', 'أنت غير مسرح لك بدخول هذا المسار🤷‍♂️');
+            }
+        
+         //^ 1.2 => Case Admin
+            return $next($request);
     }
 }

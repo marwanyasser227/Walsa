@@ -8,31 +8,35 @@ use App\Models\Partner;
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
 
-        //! 001 =>get dynamic data for home
-        $testimonails = Testimonial::latest()->paginate(5);
-        $partners = Partner::latest()->paginate(9);
-        $groupedPartners = $partners->chunk(3);
+        //! 001 =>Get dynamic data for home
+         //^ 1.1 Testimonails
+         $testimonails = Testimonial::latest()->paginate(5);
+         //^ 1.2 Partners
+         $partners = Partner::latest()->paginate(9);
+         //^ 1.3 Send Partners like groups to slider
+         $groupedPartners = $partners->chunk(3);
+
+        //! 002 => Redirect to main Site's Page with getted data
         return view('Frontend.home' , compact('testimonails' , 'groupedPartners'));
     }
 
 
     public function about(){
+
+        //! 001 => Return user to page of abouts
         return view('Frontend.General.about');
 
     }
     
 
     public function branchs(){
+       //! 001 => Return user to page of branchs
         return view('Frontend.General.branchs');
 
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
 }

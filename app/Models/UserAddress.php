@@ -30,10 +30,10 @@ class UserAddress extends Model
       public function user(){
         return $this->belongsTo(User::class);
 
-    } //^
+    }//^ Relationship with User
 
     public function city (){
         return $this->belongsTo(City::class);
 
-    } //^
+    }//^ Relationship with City
 }

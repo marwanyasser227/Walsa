@@ -44,7 +44,7 @@
                             <a class="nav-link dropdown-toggle" id="profileDropdown" role="button"
                                 data-bs-toggle="dropdown">
                                 <span>مرحبًا، {{ Auth::user()->name }}</span>
-                                <img src="{{ Auth::user()->profileImage == null ? asset('assets/avatar.jpg') : asset(Auth::user()->profileImage) }}"
+                                <img src="{{ Auth::user()->profileImage == null ? asset('assets/profileimages/avatar.jpg') : asset(Auth::user()->profileImage) }}"
                                     width="30" height="30" alt="Profile" class="rounded-circle"
                                     style="height: 30px; object-fit:cover" />
                             </a>

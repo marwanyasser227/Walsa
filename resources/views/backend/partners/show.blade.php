@@ -15,7 +15,7 @@
                     <!-- صورة الشخص -->
                     <div class="text-center mb-4">
                         <img
-                            src="{{$partner->image == null ? asset('assets/avatar.jpg') : asset($partner->image) }}"
+                            src="{{$partner->image == null ? asset('assets/profileimages/avatar.jpg') : asset($partner->image) }}"
                             alt="{{ $partner->name }}"
                             class="img-fluid rounded-circle shadow-sm"
                             style="max-width: 150px; height: 150px; border: 5px solid #e9ecef;"

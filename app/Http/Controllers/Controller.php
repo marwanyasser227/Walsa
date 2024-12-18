@@ -10,13 +10,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-    //! User Parent control Abstruct function to call toaster in all sub controllers by middleware
+
+    //! 001 => User Parent control Abstruct function to call toaster in all sub controllers by middleware
     public function __construct(){
         $this->middleware(function($request , $next){
                 toast(session('message'),'success');
-
-
-
             return $next($request);
         });
     }

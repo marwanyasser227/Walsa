@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Partner extends Model
 {
     use HasFactory;
-    //! 001 => set accesses data
-    public $fillable = [
+    
+     //! 001 => Set the columns can user modifiy in model
+     public $fillable = [
         'name',
         'image',
     ];

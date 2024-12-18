@@ -13,40 +13,45 @@ use App\Notifications\AccountUpdatedNotification;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
 
-        //! 001 => collect price of shipments, profits
+        //! 001 => Collect price of shipments, profits and losses
           //^ profits
           $shipments = Shipment::all();
           $collectedPrice = Shipment::where('status' , 3)->where('collectMoney', 1) ->sum('collectedPrice');
           $shipmentPrice = Shipment::sum('shipment_costs');
           $profits = $collectedPrice - $shipmentPrice;
           $losses = 0;
+
+        //! 002 => Set a condition in case of => refund or unkown state losses = cost of shipment and collectdprices that losted
           foreach ($shipments as $shipment) {
-            if ($shipment->status == 7 || $shipment->status == 5 ) {
-                $losses += ($shipment->shipment_costs - $shipment->collectedPrice);
+            if ($shipment->status == 5 ) {
+                $losses += ($shipment->shipment_costs);
+            }elseif($shipment->status == 7){
+                $losses += ($shipment->shipment_costs + $shipment->collectedPrice);
+
             }
-
-
           }
+
+        //! 003 => Return with losses money after check if it more or less than profits 
           $losses = min($losses, $profits);
 
-
-        //! 002 => get users informations
+        //! 004 => Get users informations
          $clients = ShipmentSender::all();
 
-
-        //! 003 => push data to targeted route
+        //! 005 => Push data to targeted route
          return view('backend.clients.users' , compact('clients'  , 'profits' ,'losses' , 'collectedPrice'));
     }
 
     public function show(string $id)
     {
+
+        //! 001 => Get client by id
         $client = ShipmentSender::find($id);
+
+        //! 002 => Set status based on id
         $shipmentSteps = [
             0 => ['title' => 'تم استلام الطلب', 'color' => 'primary'],
             1 => ['title' => 'جارٍ التجهيز', 'icon' => 'bi-box', 'color' => 'primary'],
@@ -59,49 +64,63 @@ class UserController extends Controller
 
             ];
 
+        //! 003 => Redirect to targeted page with pushed data
         return view('backend.clients.show' , compact('client' , 'shipmentSteps'));
     }
 
 
     public function notifications()
 {
-    $notifications = auth()->user()->unreadNotifications;;
-    return view('Frontend.notifications.index', compact('notifications'));
+
+        //! 001 => Get notifications from db table
+        $notifications = auth()->user()->unreadNotifications;
+
+        //! 002 => Push notifications to targeted route
+        return view('Frontend.notifications.index', compact('notifications'));
 }
 
 
 public function markAllAsRead()
 {
-    auth()->user()->unreadNotifications->markAsRead();
-    return redirect()->back()->with('message', 'لقد تم قراءة كافة الإشعارات😊.');
-}
+
+        //! 001 => Mark all notifications as read
+        auth()->user()->unreadNotifications->markAsRead();
+
+        //! 002 => GO to targeted route with toaster message
+        return redirect()->back()->with('message', 'لقد تم قراءة كافة الإشعارات😊.');
+    }
 
 
 public function markAsRead($id)
 {
-    $notification = auth()->user()->notifications()->where('id', $id)->first();
 
-    if ($notification) {
-        $notification->markAsRead();
-        return redirect()->back()->with('message', 'تم فراءة الإشعار الذي تم تحديدة😎.');
-    }
+        //! 001 => Get notification from db table based on id
+        $notification = auth()->user()->notifications()->where('id', $id)->first();
 
-    return redirect()->back()->withErrors(['error' => 'لم يتم العثور على الإشعارات.']);
+        //! 002 => Set flow to make sure that this notificatin had been read before or not 
+        if ($notification) {
+            $notification->markAsRead();
+            return redirect()->back()->with('message', 'تم فراءة الإشعار الذي تم تحديدة😎.');
+        }
+
+        //! 003 => Return redirect back with toaster message
+
+        return redirect()->back()->withErrors(['error' => 'لم يتم العثور على الإشعارات.']);
 }
 
 
     public function delete($id)
     {
-        //! 001 => get user informations based on Id
+        //! 001 => Get user informations based on Id
         $client = ShipmentSender::find($id);
 
-        //! 002 => check if user is not exists
+        //! 002 => Check if user is not exists
         if(!$client){
             return redirect()->back()->with('message' , 'يعذر العثور على معرف هذا المستخدم');
 
         }
 
-        //! 003 => delete user and redirect - Send Notification and logs
+        //! 003 => Delete user and redirect - Send Notification and logs\
 
         //^ set log
         ActivityLog::create([
@@ -109,9 +128,11 @@ public function markAsRead($id)
                 'action' => 'قام بحذف بيانات العميل '.$client->name,
 
             ]);
+
+        //^ Delete record
         $client->delete();
 
-        //! 004 => redirect to targeted page and push message and logs
+        //! 005 => Redirect to targeted page and push message and logs
         return redirect()->back()->with('message' , '😎تم الحذف بنجاح');
 
     }

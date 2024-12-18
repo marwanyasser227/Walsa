@@ -8,30 +8,27 @@ use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 class TestimonialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
+        //! 001 => Get data of testimonials from model
         $testimonials = Testimonial::all();
+
+        //! 002 => Return admin to targeted page with getted data
         return view('backend.testimonails.testimonials' , compact('testimonials'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+  
     public function create()
     {
+        //! 001 => Return Admin to create page
         return view('backend.testimonails.create');
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //! 001 => check request
+        //! 001 => Check request
         if(!$request){
             return redirect()->back()->withErrors(['error' => 'حدث خطأ ما يرجى إعادة المحاولة']);
         }
@@ -44,8 +41,10 @@ class TestimonialController extends Controller
             'message' => 'required|string|max:1000',
         ]);
 
-        //! 003 => check if there is an image and declare new object
+        //! 003 => Declare new object from testimonial class
         $testimonial = new Testimonial;
+
+        //! 004 => Check if there is an image to store it
         if($request->hasFile('image') && $request->hasFile('image') != Null){
             $imagePath = $request->file('image');
             $location = "assets/testimonails/";
@@ -54,123 +53,128 @@ class TestimonialController extends Controller
             $testimonial->image = $location.$imageName;
         }
 
-        //! 004 => store data in model
+        //! 005 => Store data in model
         $testimonial->name = $request->name;
         $testimonial->jobTitle = $request->jobTitle;
         $testimonial->message = $request->message;
         $testimonial->save();
 
-        //! 005 => make sure that every thing is ok
+        //! 006 => Make sure that every thing is ok
         if(!$testimonial){
             return redirect()->back()->withErrors(['error' => 'حدث خطأ ما يرجى إعادة المحاولة']);
 
         }
 
-
-        //! 006 => set logs to admin and message to user and redirect
+        //! 007 => Set logs to admin 
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => ' قام بإنشاء بيانات التوصية'.$testimonial->id,
             'details' => json_encode($request->all()),
         ]);
 
+        //! 008 => Redirect admin to page with toaster message
         return redirect()->route('dashboard.testimonails')->with(['message' => 'تم الإضافة بنجاح😊']);
 
     }
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         //! 001 => Find the testimonial by ID
         $testimonial = Testimonial::find($id);
+
         //! 002 => Pass the testimonial data to the view
         return view('backend.testimonails.show' , compact('testimonial'));
 
     }
 
-    // TestimonialController.php
 
-public function edit($id)
-{
-    $testimonail = Testimonial::findOrFail($id);
-    return view('backend.testimonails.edit', compact('testimonail'));
-}
+    public function edit($id)
+    {
+        //! 001 => Get data of record based on Id
+        $testimonail = Testimonial::findOrFail($id);
 
-public function update(Request $request, $id)
-{
-
-    //! 001 => set validation
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'jobTitle' => 'required|string|max:255',
-        'image' => 'nullable|max:2048',
-        'message' => 'required|string|max:1000',
-    ]);
-    $testimonail = Testimonial::findOrFail($id);
-
-    //! 002 =>store data
-       //^ Handling image upload
-       if ($request->hasFile('image')) {
-        //^ Delete the old image if exists
-        if ($testimonail->image && file_exists(($testimonail->image))) {
-            unlink($testimonail->image);
-        }
-
-        $imagePath = $request->file('image');
-        $location = "assets/testimonails/";
-        $imageName = $request->name.time().".".$request->image->extension();
-        $imagefinalPath = $location.$imageName;
-        $uploaded = move_uploaded_file($imagePath ,$location.$imageName);
-        $testimonail->image = $imagefinalPath;
-
+        //! 002 => Return admin to edit page with data
+        return view('backend.testimonails.edit', compact('testimonail'));
     }
 
-        $testimonail->name = $request->name;
-        $testimonail->jobTitle = $request->jobTitle;
-        $testimonail->message = $request->message;
-       $done =  $testimonail->save();
-    if(!$done){
-        return redirect()->back()->with(['error' => 'هنالك خطأ ما ... أعد الكرة لاحقًا🥲']);
+    public function update(Request $request, $id)
+    {
 
-    }
-
-    //! 003 => redirect to route and set logs to admin and message to user
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'action' => ' قام بتعديل بيانات التوصية'.$testimonail->id,
-            'details' => json_encode($request->all()),
+        //! 001 => Set validation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'jobTitle' => 'required|string|max:255',
+            'image' => 'nullable|max:2048',
+            'message' => 'required|string|max:1000',
         ]);
 
-        return redirect()->route('dashboard.testimonails')->with(['message' => 'تم التعديل بنجاح😊']);
-}
+        //! 002 => Search the object wants to update data 
+        $testimonail = Testimonial::findOrFail($id);
 
+        //! 003 => Store data
+         //^ Handling image upload
+         if ($request->hasFile('image')) {
+            //* Delete the old image if exists
+            if ($testimonail->image && file_exists(($testimonail->image))) {
+                unlink($testimonail->image);
+            }
+            $imagePath = $request->file('image');
+            $location = "assets/testimonails/";
+            $imageName = $request->name.time().".".$request->image->extension();
+            $imagefinalPath = $location.$imageName;
+            $uploaded = move_uploaded_file($imagePath ,$location.$imageName);
+            $testimonail->image = $imagefinalPath;
+        }
+            //* Store normal data
+            $testimonail->name = $request->name;
+            $testimonail->jobTitle = $request->jobTitle;
+            $testimonail->message = $request->message;
 
-    /**
-     * Remove the specified resource from storage.
-     */
+        //! 004 => Save changes
+        $done =  $testimonail->save();
+
+        //! 005 => Check if any problem occured
+        if(!$done){
+            return redirect()->back()->with(['error' => 'هنالك خطأ ما ... أعد الكرة لاحقًا🥲']);
+
+        }
+
+        //! 006 => Redirect to route and set logs to admin and message to user
+            ActivityLog::create([
+                'user_id' => Auth::id(),
+                'action' => ' قام بتعديل بيانات التوصية'.$testimonail->id,
+                'details' => json_encode($request->all()),
+            ]);
+
+            return redirect()->route('dashboard.testimonails')->with(['message' => 'تم التعديل بنجاح😊']);
+    }
+
     public function destroy($id)
     {
         //! 001 => Search record
         $testimonail= Testimonial::find($id);
+
         //! 002 => Handle probabiltes errors
         if(!$testimonail){
             return redirect()->back()->withErrors(['error' => 'حدث خطأ ما يرجى إعادة المحاولة']);
         }
 
+        //! 003 => Delete record and set logs for admin and messages
+        $testimonail->delete();
+
+        //! 004 => Check if the targeted person has any image to delete it
         if(file_exists($testimonail->image)){
             unlink($testimonail->image);
         }
-        //! 003 => Delete record and set logs for admin and messages
 
-        $testimonail->delete();
-
+        //! 005 => Send log to admin with the activity data
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => ' قام بحذف التوصية'.$testimonail->id,
         ]);
+
+        //! 006 => Redirect admin back with toaster message
         return redirect()->back()->with(['message' => 'تم حذف التوصية بنجاح😢']);
 
     }

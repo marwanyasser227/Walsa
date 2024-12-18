@@ -25,7 +25,7 @@
                             <td>
                                 <div class="d-flex px-2 py-1">
                                     <div>
-                                        <img src="{{$testimonail->image == null ? asset('assets/avatar.jpg') : asset($testimonail->image) }}"
+                                        <img src="{{$testimonail->image == null ? asset('assets/profileimages/avatar.jpg') : asset($testimonail->image) }}"
                                             class="mx-3 avatar avatar-sm me-3 border-radius-lg" style="object-fit: cover" alt="user1">
                                     </div>
 

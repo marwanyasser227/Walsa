@@ -11,7 +11,7 @@ class City extends Model
 {
     use HasFactory;
 
-  //! 001 => Set the columns can user modifiy in model
+    //! 001 => Set the columns can user modifiy in model
     public $fillable = [
         'name',
         'governate_id',
@@ -26,9 +26,10 @@ class City extends Model
     public function address (){
         return $this->hasMany(Address::class);
 
-    } //^
+    } //^ Realtion with Address table
 
     public function recivers(){
         return $this->belongsTo(ShipmentReciver::class ,'city_id');
-     }
+        
+     }//^ Realtion with Reciver table
 }

@@ -4,6 +4,7 @@
     <section class="testimonials-section py-5">
         <div class="container">
             <h3 class="text-center mb-4">آراء عملائنا</h3>
+            @if (count($testimonails) > 0)
             <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
 
@@ -12,7 +13,7 @@
                         <div class="row justify-content-center">
                             <div class="col-md-5 text-center">
                                 <div class="card shadow-sm border-0 rounded-3 p-4">
-                                    <img src="{{$value->image == null ? asset('assets/avatar.jpg') : asset($value->image) }}" alt="{{$value->name}}" class="rounded-circle mb-3 mx-auto"
+                                    <img src="{{$value->image == null ? asset('assets/profileimages/avatar.jpg') : asset($value->image) }}" alt="{{$value->name}}" class="rounded-circle mb-3 mx-auto"
                                         width="100" height="100">
                                     <h5>{{$value->name}}</h5>
                                     <p class="text-muted">{{$value->jobTitle}}</p>
@@ -38,5 +39,14 @@
                     <span class="visually-hidden">التالي</span>
                 </button>
             </div>
+
+
+            @else
+            <div class="vh-50 rounded-2 py-5" style="background-color: #56c8a426;   padding:26px;">
+                <h4 class="text-center"> لا يوجد توصيات🥲</h4>
+
+            </div>
+            @endif
+    
         </div>
     </section>

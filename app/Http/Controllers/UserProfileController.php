@@ -15,45 +15,50 @@ use App\Notifications\AccountUpdatedNotification;
 
 class UserProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function edit()
     {
         //! 001 => Handle condition to maintain that user can't enter without Auth even so pass the middleware[propaplity]
         if(!Auth::user()){
-            return redirect()->route('site.home')->withErrors(['error' => 'you are not loged in!']);
+            return redirect()->route('site.home')->withErrors(['error' => 'انت غير مسجل لدخولك😒']);
 
         }
-        //! 002 => Get user from Registerd Id in Auth and push it to profile page
+        //! 002 => Get user from Registered Id in Auth and push it to profile page
         $user = User::with('addresses')->find(Auth::id());
-        $governates = Governate::all();
-        $cities = City::all(); // Fetch all cities
 
+        //! 003 => Get governates data
+        $governates = Governate::all();
+
+        //! 004 => Get all cities data
+        $cities = City::all(); 
+
+        //! 005 => Return User to profile page with data
         return view('Frontend.User.Profile.profile',compact('user' , 'governates'));
 
     }
 
     public function UpdateUserMainData(UpdateEssentailUserData $request)
     {
-        //! 001 => confirm if there is a valid request
+        //! 001 => Confirm if there is a valid request
         if(!$request){
             return redirect()->route('site.home');
         }
 
-        //! 002 => check validation aleardy get in custom request
+        //! 002 => Check validation aleardy get in custom request
 
-        //! 003 => confirm that phone or email does not belongs to in other account
+        //! 003 => Confirm that phone or email does not belongs to in other account
          $duplicateEmail = User::where('email',$request->email)->first();
          $duplicatePhone =  User::where('phone',$request->phone)->first();
 
          if($duplicateEmail && Auth::user()->id != $duplicateEmail->id  ){
             return redirect()->back()->withErrors(['error' => 'البريد مستخدم في حساب أخر أعد المحاولة']);
-         }elseif($duplicatePhone && Auth::user()->id != $duplicatePhone->id ){
+         }
+         elseif($duplicatePhone && Auth::user()->id != $duplicatePhone->id ){
             return redirect()->back()->withErrors(['error' => 'الهاتف مستخدم في حساب أخر أعد المحاولة']);
 
          }
-        //! 004 => is every thing is okay lets save new data
+
+        //! 004 => Is every thing is okay lets save new data
         $user = User::find(Auth::id());
         $update = $user->update([
             'name' => $request->name,
@@ -67,51 +72,62 @@ class UserProfileController extends Controller
             return redirect()->back()->withErrors(['error' => 'ربما حدث خطب ما أعد المحاولة']);
 
         }
+
+        //! 006 => Send notification to user with changes
         $details = "لقد تم تحديث بياناتك بنجاح يا  ".Auth::user()->name." 😎";
         $user->notify(new AccountUpdatedNotification($details));
 
+        //! 007 => Redirect it back to profile page with toaster message
         return redirect()->back()->with('message' , 'تهانينًا تم تحديث بياناتك بنجاح😁');
 
 
     }
     public function UpdateProfileImage(UpdateEssentailUserData $request, User $user)
     {
-        //! 001 => confirm if there is a valid request
+        //! 001 => Confirm if there is a valid request
         if(!$request){
             return redirect()->route('site.home');
         }
 
-        //! 002 => check validation already get in custom request
+        //! 002 => Check validation already get in custom request
 
-        //! 003 => move image to files
+        //! 003 => Find user based on Auth id
         $user = User::find(Auth::id());
         if ($user->profileImage && file_exists(($user->profileImage) )) {
             unlink($user->profileImage);
         }
-        //! 004 => make sure that the request of input is not null !
+        //! 004 => Make sure that the request of input is not null !
         if(is_null($request->file('profile_image'))){
             return redirect()->back()->withErrors(['error' => 'يجب ان ترفع صورة😒']);
         }
-        //! 005 => store image into public path
+        //! 005 => Store image into public path
          $imagePath = $request->file('profile_image');
          $location = "assets/profileimages/";
          $imageName = $user->name.time().".".$request->profile_image->extension();
          $uploaded = move_uploaded_file($imagePath ,$location.$imageName);
+         
          if($uploaded){
-        //! 005 => is every thing is okay lets save new image path
+
+        //! 005 => Is every thing is okay lets save new image path
             $update =$user->update([
                 'profileImage' => $location.$imageName,
             ]);
 
-            $details = "لقد تم تحديث صورتك بنجاح يا  ".Auth::user()->name." 😎";
-            $user->notify(new AccountUpdatedNotification($details));
-            return redirect()->back()->with('message', '😎تم تحديث الصورة بنجاح!');
-                }
-        //! 005 => Confirm that the update is done
-        if(!$update){
+        }
+
+        //! 006 => Confirm that the update is done
+         if(!$update){
             return redirect()->back()->withErrors(['error' => 'ربما حدث خطب ما أعد المحاولة']);
 
         }
+        //! 006 => Send notification to user with successes changes
+            $details = "لقد تم تحديث صورتك بنجاح يا  ".Auth::user()->name." 😎";
+            $user->notify(new AccountUpdatedNotification($details));
+        
+        //! 007 => Return him redirect back with toaster message
+            return redirect()->back()->with('message', '😎تم تحديث الصورة بنجاح!');
+                
+       
 
 
     }
@@ -123,9 +139,9 @@ class UserProfileController extends Controller
         return redirect()->route('site.home');
     }
 
-    //! 002 => check validation already get in custom request
+      //! 002 => check validation already get in custom request
 
-    //! 003 => check Possible Duplication
+      //! 003 => check Possible Duplication
 
 
     if(!is_numeric($request->postCode)){
@@ -192,39 +208,45 @@ class UserProfileController extends Controller
 
 
 
-     //! 004 => if every thing is good let's redirect user
-     if($address){
-     $details = "لقد تم تحديث العنوان بنجاح يا  ".Auth::user()->name." 😎";
-     $user->notify(new AccountUpdatedNotification($details));
-         return redirect()->back()->with('message', '👌تم تعديل العنوان بنجاح!');
-     }
-     }
+     //! 004 => If every thing is good let's redirect user
+        if($address){
+        $details = "لقد تم تحديث العنوان بنجاح يا  ".Auth::user()->name." 😎";
+        $user->notify(new AccountUpdatedNotification($details));
+            return redirect()->back()->with('message', '👌تم تعديل العنوان بنجاح!');
+        }
+        }
 
 
     public function deleteUserAddress($id  ,Request $request){
-          //! 001 => confirm if there is a valid request
+
+     //! 001 => Confirm if there is a valid request
           if(!$request){
             return redirect()->route('site.home');
         }
 
          $address = UserAddress::find($id);
-         //! 002 => Handle Delete manual error
+    //! 002 => Handle Delete manual error
          if(!$address || !$address != Null){
             return redirect()->back()->withErrors(['errors' => 'حدثت مشكلة ما عاود المحاولة🤷‍♂️']);
         }
 
-
-
+    //! 003 => delete recored and send notification to user
         $address->delete();
         $details = "لقد تم حذف العنوان بنجاح يا  ".Auth::user()->name." 😎";
         $address->user->notify(new AccountUpdatedNotification($details));
 
+    //! 004 => return back with toaster message
         return redirect()->back()->with('message', '👌تم الحذف العنوان بنجاح!');
 
     }
+
+
     public function getCities($governateId)
     {
+        //! 001 => get cities from City model based on ajax and on click BOM JS 
         $cities = City::where('governate_id', $governateId)->get(['id', 'name']);
+
+        //! 002 => return with data
         return response()->json($cities);
     }
 
