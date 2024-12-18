@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('maps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('hub_id')->constrianed()->cascadeOnDelete();
+            $table->foreignId('hub_id')->constrianed()->onDelete('delete');
             $table->text('map');
             $table->timestamps();
         });
