@@ -3,7 +3,7 @@
 <div class="container text-center py-5">
     <!-- Svg Undraw img -->
     <div class="mb-4">
-        <img src="{{asset('assets/undraw_towing_re_wesa.svg')}}" alt="" class="img-fluid" width="350" height="350">
+        <img src="{{asset('assets/site/error404.svg')}}" alt="" class="img-fluid" width="350" height="350">
     </div>
 
     <!-- 404 Message -->

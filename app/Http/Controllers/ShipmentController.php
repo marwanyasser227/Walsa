@@ -16,6 +16,8 @@ use App\Notifications\ShipmentCreatedNotification;
 use App\Notifications\ShipmentUpdatedNotification;
 use App\Notifications\AccountCreatedNotification;
 use App\Models\ActivityLog;
+use Illuminate\Support\Str;
+
 //^ => Set some consts for shipping options
 const EXPRESS = 'express';
 const FRAGILE = 'fragile';
@@ -26,7 +28,7 @@ class ShipmentController extends Controller
 
     public function createShipment(){
 
-        //! 001 => Get Governates informations 
+        //! 001 => Get Governates informations
         $governates = Governate::all();
 
         //! 002 => Return user to create page with governates
@@ -107,7 +109,7 @@ class ShipmentController extends Controller
                     //& 4.2.2.1 => Find Address based on id sended in request by user
                     $address = $request->selected_address;
                     $address = UserAddress::find($address);
-                    
+
                     //& 4.2.2.2 => Create new Sender Account
                     $sender = New ShipmentSender;
                     $sender->name = Auth::user()->name;
@@ -167,7 +169,7 @@ class ShipmentController extends Controller
             if($request->createAccount == 1 && !$checkDuplicate){
                 //* 7.2.1 => Set Random Password
                 $password = Str::random(12); //! improvement
-                
+
                 //* 7.2.2 => Create an user account
                 $user = User::create([
                     'name' => $sender->name,
@@ -245,7 +247,7 @@ class ShipmentController extends Controller
         }
 
         //! 012 Set Logs to admin and message to customer
-        
+
         //! 013 => redirect user to the shipments page based on his case
 
          //^ 013.1 => If he was a guest and does not want to make user
@@ -281,10 +283,10 @@ class ShipmentController extends Controller
                 'action' => 'قام بإنشاء الطلبية رقم'.$trackNumber,
 
             ]);
-            
+
             //* 013.3.2 => Send notifications to user with shipment status
             $shipment->user->notify(new ShipmentCreatedNotification($shipment));
-            
+
             //* 013.3.3 => Redirect to page
             return redirect()->route('shipment.list')->with('message' , 'تهانينا لقد تم إنشاء الشحنة بنجاح😎');
 
@@ -458,7 +460,7 @@ class ShipmentController extends Controller
             if($shipment == null){
                     return redirect()->back()->withErrors(['errors' => 'يبدو أن هنالك خطب ما ... أعد المحاولة لاحقًا🤦‍♂️']);
             }
-            
+
             //! 004 => Redirect admin to tracked page with details
             return view('backend.shipments.track_details' , compact('shipment' , 'shipmentSteps'));
             }
@@ -488,7 +490,7 @@ class ShipmentController extends Controller
 
               //& 3.2 => Get governated data
               $governates = Governate::all();
-            
+
             //! 004 => Return user to page with data getted form database tables
             return view('backend.shipments.edit' , compact('shipment' , 'governates' ,'shipmentSteps'));
         }
@@ -568,18 +570,18 @@ class ShipmentController extends Controller
 
               //^ 4.1 => Define price based on shipment_costs in original shipment price
               $price = $shipment->shipment_costs;
-              
+
               //^ 4.2 => Check if there is any additional costs
               if($request->Additional_shipment_costs > 0 ){
                 $price += $request->Additional_shipment_costs;
               }
 
               //^ 4.3 => Check if User choice option of collect money from his guest
-               //* 4.3.1 => Case no 
+               //* 4.3.1 => Case no
                 if($request->collectMoney == null){
                    $shipment->collectMoney =0;
                    $shipment->collectedPrice = 0;
-                
+
               //* 4.3.2 => Case yes
                }else{
                   $shipment->collectMoney = $request->collectMoney;

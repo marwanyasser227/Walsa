@@ -71,9 +71,9 @@
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li class="dropdown-header">الإشعارات</li>
                                 @forelse(Auth::user()->unreadNotifications as $notification)
-                                    <li><a class="dropdown-item" href="#">{{ $notification->data['message'] }}</a></li>
+                                    <li><a class="dropdown-item" href="{{route('user.notifications')}}">{{ $notification->data['message'] }}</a></li>
                                 @empty
-                                    <li><a class="dropdown-item" href="#">لا توجد إشعارات جديدة</a></li>
+                                    <li><a class="dropdown-item" href="{{route('user.notifications')}}">لا توجد إشعارات جديدة</a></li>
                                 @endforelse
                                 <li>
                                     <div class="dropdown-divider"></div>

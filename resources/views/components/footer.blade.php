@@ -42,7 +42,7 @@
                             <li><a href="{{ route('shipment.list') }}">طلباتي</a></li>
                             <li><a href="{{ route('shipment.track') }}">تتبع الطلبات</a></li>
 
-                            <li><a href="#">قائمة العملاء</a></li>
+                            {{-- <li><a href="#">قائمة العملاء</a></li> --}}
                             <li><a href="{{ route('logout') }}">تسجيل الخروج</a></li>
                         </ul>
                     @endauth

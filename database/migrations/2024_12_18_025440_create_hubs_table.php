@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('hubs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('city_id')->constrained()->cascadeOnDelete();
+            $table->string('name_ar');
+            $table->string('address');
+            $table->foreignId('city_id');
+            $table->foreign('city_id')->on('cities')->references('id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

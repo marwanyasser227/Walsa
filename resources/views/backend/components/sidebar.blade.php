@@ -73,6 +73,12 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link text-dark" href="{{ route('hubs.index') }}">
+                    <i class="material-symbols-rounded opacity-10">garage_home</i>
+                    <span class="nav-link-text me-1">المراكز</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-dark" href="{{ route('contact.index') }}">
                     <i class="material-symbols-rounded opacity-10">notes</i>
                     <span class="nav-link-text me-1">الرسائل</span>

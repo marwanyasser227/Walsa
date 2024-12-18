@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Testimonial;
 use App\Models\Partner;
+use App\Models\Hub;
+use App\Models\City;
+use App\Models\ShipmentSender as Sender;
+use App\Models\ShipmentReciver as Reciver;
+use App\Models\Map;
 
 class HomeController extends Controller
 {
-   
+
     public function index()
     {
 
@@ -31,11 +36,14 @@ class HomeController extends Controller
         return view('Frontend.General.about');
 
     }
-    
+
 
     public function branchs(){
-       //! 001 => Return user to page of branchs
-        return view('Frontend.General.branchs');
+        //! 001 => Get data from Hub Model
+          $hubs = Hub::with('map')->latest()->paginate(10);
+
+        //! 002 => Return user to page of branchs
+        return view('Frontend.General.branchs' , compact('hubs'));
 
     }
 

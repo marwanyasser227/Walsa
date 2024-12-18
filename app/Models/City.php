@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Governate;
 use App\Models\Address;
 use App\Models\ShipmentReciver;
+use App\Models\Hub;
 class City extends Model
 {
     use HasFactory;
@@ -29,7 +30,17 @@ class City extends Model
     } //^ Realtion with Address table
 
     public function recivers(){
-        return $this->belongsTo(ShipmentReciver::class ,'city_id');
-        
+        return $this->hasMany(ShipmentReciver::class ,'city_id');
+
      }//^ Realtion with Reciver table
+
+    public function senders(){
+        return $this->hasMany(ShipmentReciver::class ,'city_id');
+
+     }//^ Realtion with Reciver table
+
+    public function hub(){
+        return $this->hasOne(Hub::class);
+
+     }//^ Realtion with Hub table
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HubController;
 
 use App\Models\Shipment;
 
@@ -69,12 +70,12 @@ use App\Models\Shipment;
     Route::get('/notifications', [UserController::class, 'notifications'])->name('user.notifications');
     Route::post('/notifications/{id}/read', [UserController::class, 'markAsRead'])->name('notifications.read');
     Route::post('/notifications/read-all', [UserController::class, 'markAllAsRead'])->name('notifications.readAll');
+
     //! 006 => Contact Routes
     Route::get('contact' , [ContactController::class,'create'])->name('site.contact');
     Route::post('contact' , [ContactController::class,'store'])->name('site.contact.store');
 
     });
-
 
     //! 007 => Error Handling
     Route::fallback(function () {
@@ -136,6 +137,8 @@ use App\Models\Shipment;
     Route::get('contact/{id}' , [ContactController::class,'show'])->name('contact.show');
     Route::delete('contact/{id}/delete' , [ContactController::class,'delete'])->name('contact.delete');
 
+    //! 009 Hubs Managment Routes
+    Route::resource('hubs' , HubController::class);
 
 });
 
