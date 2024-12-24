@@ -73,7 +73,7 @@ class ShipmentController extends Controller
             }elseif(Auth::user()){
                 $sender = ShipmentSender::where('email',Auth::user()->email)->orWhere('phone' , Auth::user()->phone)->first();
                 //*4.2.1 => Create sender if it's not has any saved data in records and create address if he does not has
-                if(!$sender && count(Auth::user()->addresses) < 1 && $request->city_id != null){
+                if($sender && count(Auth::user()->addresses) < 1 && $request->city_id != null){
                     //& 4.2.1.1 => Create Address
                     $address = new UserAddress;
                     $address->street =$request->sender_street;
