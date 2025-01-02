@@ -5,13 +5,13 @@
     </p>
     <ul class="list-unstyled">
         <li class="mb-3">
-            <p class="about-vision-item"> <i class="bi bi-envelope "></i> <strong>البريد الإلكتروني:</strong></p> info@company.com
+            <p class="about-vision-item"> <i class="bi bi-envelope "></i> <strong>البريد الإلكتروني:</strong></p> info@wasla.com
         </li>
         <li class="mb-3">
-            <p class="about-vision-item">  <i class="bi bi-telephone "></i> <strong>الهاتف:</strong></p> +966-555-555-555
+            <p class="about-vision-item">  <i class="bi bi-telephone "></i> <strong>الهاتف:</strong></p> +201024392440
         </li>
         <li class="mb-3">
-            <p class="about-vision-item">  <i class="bi bi-geo-alt"></i> <strong>العنوان:</strong></p> الرياض، المملكة العربية السعودية
+            <p class="about-vision-item">  <i class="bi bi-geo-alt"></i> <strong>العنوان:</strong></p> شارع الصفا والمروة, المنصورة, مصر
         </li>
     </ul>
 </div>
