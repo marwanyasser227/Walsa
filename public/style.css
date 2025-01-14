@@ -61,7 +61,7 @@ body {
     margin: 75px !important;
 }
 
-.breadcrumb-item a{
+.breadcrumb-item a {
     color: #56c8a3 !important;
 }
 
@@ -81,8 +81,6 @@ body {
     background-color: red;
 }
 
-
-
 .hidden {
     display: none;
 }
@@ -90,10 +88,9 @@ body {
     .main-container {
         margin: auto !important ;
         row-gap: 15px;
-
     }
 
-    .btn{
+    .btn {
         padding: 7px !important;
         font-size: 16px !important;
     }
@@ -120,10 +117,10 @@ body {
     background-color: #a06945 !important;
 }
 
-
-
 /* Form Fields */
-form input , form select , form textarea{
+form input,
+form select,
+form textarea {
     border: 1px solid #5dcaa6;
     transition: border-color 0.3s;
     font-size: 16px !important;
@@ -131,8 +128,9 @@ form input , form select , form textarea{
     padding: 15px 15px !important;
 }
 
-
-form input:focus, form select:focus , form textarea:focus {
+form input:focus,
+form select:focus,
+form textarea:focus {
     border-color: #5dcaa6 !important; /* Darker green for focus */
     box-shadow: 0 0 5px rgba(50, 205, 50, 0.5) !important;
 }
@@ -140,9 +138,6 @@ form a {
     text-decoration: none;
     color: #56c8a3;
 }
-
-
-
 
 /* Fade Effect in transition between contents*/
 .fade-container {
@@ -153,10 +148,6 @@ form a {
 .fade-container.loaded {
     opacity: 1;
 }
-
-
-
-
 
 /* Logistics Header */
 .navbar {
@@ -192,19 +183,16 @@ form a {
     transition: 0.5s !important;
 }
 
-
 /*Mobile */
 
 @media (max-width: 767px) {
-.nav-track{
-    margin: 6px 0 !important;
-
+    .nav-track {
+        margin: 6px 0 !important;
+    }
+    .nav-link {
+        padding: 10px 30px !important;
+    }
 }
-.nav-link {
-    padding: 10px 30px !important;
-}
-}
-
 
 @keyframes slideDown {
     from {
@@ -721,7 +709,6 @@ form {
     align-self: start;
 }
 
-
 .progress-step .step-title {
     font-size: 14px;
     color: #333;
@@ -734,14 +721,12 @@ form {
     color: #e7914f;
 }
 
-
 /*Mobile */
 
 @media (max-width: 767px) {
     .progress-container {
         display: flex !important;
         column-gap: 15px !important;
-
     }
     .progress-step .step-title {
         font-size: 12px !important;
@@ -750,14 +735,14 @@ form {
 }
 
 /*My Shipments Page*/
-.shipments-container{
+.shipments-container {
     display: flex !important;
     align-items: start;
     justify-content: space-between;
     flex-direction: column;
 }
 .shipments-container .status-badge {
-    background-color: #4de170ad ;
+    background-color: #4de170ad;
     padding: 5px;
     margin: 5px 0;
     font-size: 13px !important;
@@ -766,15 +751,15 @@ form {
 }
 
 @media (max-width: 767px) {
-     .track-btn {
+    .track-btn {
         margin: auto !important;
         display: block !important;
-        margin: 25px !important
-    };
-    .shipments-container{
+        margin: 25px !important;
+    }
+    .shipments-container {
         display: none !important;
     }
-};
+}
 
 /*About style*/
 /* General Styling */
@@ -802,23 +787,22 @@ img {
     margin-right: 10px;
     font-size: 1.2rem;
 }
-.about-vision-item{
+.about-vision-item {
     font-size: 16px !important;
     margin-left: 5px;
     display: inline;
-
 }
 
-.about-page .navbar-brand{
+.about-page .navbar-brand {
     font-size: 5em;
 }
 @media (max-width: 767px) {
-    .about-vision-item{
+    .about-vision-item {
         display: block;
     }
 
-    .about-page .navbar-brand{
-        font-size:3em;
+    .about-page .navbar-brand {
+        font-size: 3em;
         color: #e7914f !important;
     }
 }
@@ -868,8 +852,8 @@ img {
     color: #5dcaa6; /* Green theme */
 }
 
-.branchCarousel .carousel-inner .carousel-item .branch-card{
-    padding: 30px ;
+.branchCarousel .carousel-inner .carousel-item .branch-card {
+    padding: 30px;
 }
 
 /*Cotnact Page*/
@@ -926,13 +910,13 @@ img {
 .mt-4 {
     margin-top: 30px;
 }
-.form-check{
+.form-check {
     padding: 0 10px !important;
     display: flex !important;
     align-items: center !important;
     gap: 20px !important;
 }
-.checkbox-address{
+.checkbox-address {
     background-color: #e7914f8d !important;
     width: 10px !important;
     height: 10px !important;
@@ -1036,7 +1020,12 @@ img {
         margin: auto !important;
         display: block !important;
     }
-    .footer .footer-description{
-        text-align :center;
+    .footer .footer-description {
+        text-align: center;
+    }
+
+    .social-icons {
+        margin-top: 20px;
+        text-align: center !important;
     }
 }
